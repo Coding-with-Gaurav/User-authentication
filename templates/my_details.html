@@ -1,0 +1,39 @@
+<!-- my_details.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Details</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div id="details-container">
+         {% if session['user'] %}
+            <h1 class="details-heading">Hello, {{ session['user']['name'] }}</h1>
+        <table class="user-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Password</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>{{ user['name'] }}</td>
+                        <td>{{ user['email'] }}</td>
+                        <td>{{ user['password'] }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+       <a href="{{ url_for('logout') }}" class="button-my-details" id="logoutButton">Logout</a>
+        {% endif %}
+    </div>
+</body>
+</html>

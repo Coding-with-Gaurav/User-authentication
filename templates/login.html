@@ -1,0 +1,28 @@
+<!-- login.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div id="login-container">
+        <h1 class="login-heading">Login</h1>
+        <form action="{{ url_for('login') }}" method="post" class="login-form">
+            <label for="email" class="login-label">Email:</label>
+            <input type="email" name="email" required class="login-input"><br>
+
+            <label for="password" class="login-label">Password:</label>
+            <input type="password" name="password" required class="login-input"><br>
+
+            <button type="submit" class="login-button">Login</button>
+        </form>
+
+        <a href="{{ url_for('index') }}" class="login-link">Back to Registration</a>
+    </div>
+</body>
+</html>
