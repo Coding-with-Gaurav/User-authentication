@@ -4,8 +4,8 @@ import os
 from pymongo import MongoClient
 from werkzeug.security import generate_password_hash, check_password_hash
 import secrets
-port = int(os.environ.get('PORT', 5000))
-app.run(host='0.0.0.0', port=port)
+# port = int(os.environ.get('PORT', 5000))
+# app.run(host='0.0.0.0', port=port)
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
@@ -26,9 +26,7 @@ def submit():
         password = request.form['password']
 
         # Hash the password before storing it
-        hashed_password = generate_password_hash(password, method='sha256')
-
-        # Save hashed password to MongoDB
+        hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
         user_data = {'name': name, 'email': email, 'password': hashed_password}
         collection.insert_one(user_data)
 
@@ -39,11 +37,9 @@ def login():
         email = request.form['email']
         password = request.form['password']
 
-        # Check if user exists in the database
         user = collection.find_one({'email': email})
 
         if user and check_password_hash(user['password'], password):
-            # If the email and password match, store user info in the session
             session['user'] = {'name': user['name'], 'email': user['email']}
             return redirect(url_for('my_details'))
         else:
@@ -53,13 +49,11 @@ def login():
 
 @app.route('/logout')
 def logout():
-    # Clear the user session to log them out
     session.pop('user', None)
     return redirect(url_for('index'))
 
 @app.route('/my_details')
 def my_details():
-    # Retrieve user data from MongoDB
     users = collection.find()
     return render_template('my_details.html', users=users)
 
